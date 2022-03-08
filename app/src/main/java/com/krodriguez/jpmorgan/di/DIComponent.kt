@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.krodriguez.jpmorgan.BuildConfig
 import com.krodriguez.jpmorgan.data.local.AlbumDatabase
 import com.krodriguez.jpmorgan.data.local.LocalAlbumRepositoryImpl
+import com.krodriguez.jpmorgan.data.local.dao.AlbumsDao
 import com.krodriguez.jpmorgan.data.remote.RemoteAlbumRepositoryImpl
 import com.krodriguez.jpmorgan.data.remote.RemoteAlbumService
 import com.krodriguez.jpmorgan.domain.mapper.AlbumsMapper
@@ -52,7 +53,7 @@ object DIComponent {
     private fun buildViewModel(viewModelStoreOwner: ViewModelStoreOwner): ViewModelProvider {
         return ViewModelProvider(viewModelStoreOwner,
             object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return AlbumViewModel(provideUseCase()) as T
                 }
             })
@@ -70,8 +71,12 @@ object DIComponent {
             ?: throw RuntimeException("Database is not ready")
     }
 
+    private fun provideAlbumLocalDao(): AlbumsDao {
+        return provideAlbumDatabase().albumsDao()
+    }
+
     private fun provideLocalRepositoryImpl() =
-        LocalAlbumRepositoryImpl(provideAlbumDatabase(), provideMapper())
+        LocalAlbumRepositoryImpl(provideAlbumLocalDao(), provideMapper())
 
     private fun provideMapper() = AlbumsMapper()
 

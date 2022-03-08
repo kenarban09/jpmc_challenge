@@ -33,9 +33,6 @@ class AlbumViewModel(
     private suspend fun checkOfflineMode() {
         // Check Offline mode
         useCase.execute(isOnline = false)
-            .catch {
-                _albumsLiveData.value = APIState.Error("No connection!")
-            }
             .collect { dataState ->
                 _albumsLiveData.value = dataState
             }

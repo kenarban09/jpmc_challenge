@@ -10,11 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class LocalAlbumRepositoryImpl(
-    database: AlbumDatabase,
+    private val albumsDao: AlbumsDao,
     private val mapper: AlbumsMapper
 ) : LocalAlbumRepository {
-
-    private val albumsDao: AlbumsDao = database.albumsDao()
 
     companion object {
         private const val DELAY: Long = 100

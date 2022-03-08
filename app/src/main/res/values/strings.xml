@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">JPMorgan Challenge</string>
     <string name="menu_list">Album\'s List</string>
+    <string name="empty_items">No data available!</string>
 </resources>

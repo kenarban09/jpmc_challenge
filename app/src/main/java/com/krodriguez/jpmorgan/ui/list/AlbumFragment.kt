@@ -72,15 +72,19 @@ class AlbumFragment : Fragment() {
                 }
             }
             is APIState.Success -> {
-                binding.apply {
-                    pbLoading.visibility = View.GONE
-                    tvError.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    srlList.isRefreshing = false
-                }
+                if (dataState.data.isEmpty()) {
+                    showErrorData(error = getString(R.string.empty_items))
+                } else {
+                    binding.apply {
+                        pbLoading.visibility = View.GONE
+                        tvError.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        srlList.isRefreshing = false
+                    }
 
-                dataState.data.let { list ->
-                    albumAdapter.updateDataSet(list)
+                    dataState.data.let { list ->
+                        albumAdapter.updateDataSet(list)
+                    }
                 }
             }
             is APIState.Empty -> {
