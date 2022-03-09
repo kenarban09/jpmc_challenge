@@ -29,8 +29,9 @@ class RemoteAlbumRepositoryImpl(
 
             if (albums.isSuccessful) {
                 albums.body()?.let { response ->
-                    syncDatabase(response)
-                    emit(APIState.Success(response))
+                    val sortedResponse = response.sortedBy { it.title }
+                    syncDatabase(sortedResponse)
+                    emit(APIState.Success(sortedResponse))
                 } ?: run {
                     emit(APIState.Empty("Empty response"))
                 }

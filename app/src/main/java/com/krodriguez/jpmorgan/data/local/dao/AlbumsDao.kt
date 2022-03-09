@@ -7,7 +7,7 @@ import com.krodriguez.jpmorgan.data.local.model.DBConstants
 @Dao
 interface AlbumsDao {
 
-    @Query("SELECT * FROM ${DBConstants.ALBUM_TABLE} ORDER BY id DESC")
+    @Query("SELECT * FROM ${DBConstants.ALBUM_TABLE} ORDER BY title ASC")
     fun getAlbums(): List<AlbumEntity>
 
     @Insert
