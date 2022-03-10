@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.krodriguez.jpmorgan.R
+import com.krodriguez.jpmorgan.data.remote.model.RemoteAlbumItem
 import com.krodriguez.jpmorgan.data.remote.state.APIState
 import com.krodriguez.jpmorgan.databinding.FragmentListBinding
-import com.krodriguez.jpmorgan.di.DIComponent
+import com.krodriguez.jpmorgan.di.DIPresentationComponent
 import com.krodriguez.jpmorgan.ui.ToolbarExtension
 
 class AlbumFragment : Fragment() {
@@ -18,11 +20,11 @@ class AlbumFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
 
     private val albumAdapter: AlbumAdapter by lazy {
-        AlbumAdapter(emptyList())
+        AlbumAdapter(emptyList(), ::openDetail)
     }
 
     private val viewModel by lazy {
-        DIComponent.provideViewModel(this)
+        DIPresentationComponent.provideAlbumViewModel(this)
     }
 
     override fun onCreateView(
@@ -71,8 +73,10 @@ class AlbumFragment : Fragment() {
                     recyclerView.visibility = View.GONE
                 }
             }
-            is APIState.Success -> {
-                if (dataState.data.isEmpty()) {
+            is APIState.Success<*> -> {
+                val dataStateList = dataState.data as List<RemoteAlbumItem>
+
+                if (dataStateList.isEmpty()) {
                     showErrorData(error = getString(R.string.empty_items))
                 } else {
                     binding.apply {
@@ -82,7 +86,7 @@ class AlbumFragment : Fragment() {
                         srlList.isRefreshing = false
                     }
 
-                    dataState.data.let { list ->
+                    dataStateList.let { list ->
                         albumAdapter.updateDataSet(list)
                     }
                 }
@@ -103,6 +107,7 @@ class AlbumFragment : Fragment() {
         binding.apply {
             tvError.text = error
             tvError.visibility = View.VISIBLE
+
             recyclerView.visibility = View.GONE
             pbLoading.visibility = View.GONE
             srlList.isRefreshing = false
@@ -127,5 +132,14 @@ class AlbumFragment : Fragment() {
                 viewModel.getAlbums()
             }
         }
+    }
+
+    private fun openDetail(remoteAlbumItem: RemoteAlbumItem) {
+        val nonNullableId = checkNotNull(remoteAlbumItem.id) {
+            throw NullPointerException("Album id cannot be null")
+        }
+
+        val direction = AlbumFragmentDirections.actionNavListToNavDetails(nonNullableId)
+        findNavController().navigate(direction)
     }
 }

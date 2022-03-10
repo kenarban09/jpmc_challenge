@@ -31,14 +31,38 @@ class RemoteAlbumRepositoryImpl(
                 albums.body()?.let { response ->
                     val sortedResponse = response.sortedBy { it.title }
                     syncDatabase(sortedResponse)
+
+                    // Success
                     emit(APIState.Success(sortedResponse))
                 } ?: run {
+
+                    // Success without data
                     emit(APIState.Empty("Empty response"))
                 }
             } else {
+                // Error
                 emit(APIState.Error("Error response: ${albums.code()}"))
             }
         } catch (e: Exception) {
+            // No connection exception
+            throw UnknownHostException("No connection")
+        }
+    }
+
+    override suspend fun getAlbumById(albumId: Int): Flow<APIState> = flow {
+        emit(APIState.Loading)
+
+        try {
+            val albums = service.getAlbumById(albumId)
+
+            if (albums.isSuccessful) {
+                albums.body()?.let { response ->
+                    // Success
+                    emit(APIState.Success(response))
+                }
+            }
+        } catch (e: Exception) {
+            // No connection exception
             throw UnknownHostException("No connection")
         }
     }

@@ -7,4 +7,7 @@ import retrofit2.http.GET
 interface RemoteAlbumService {
     @GET("albums")
     suspend fun getAlbums(): Response<List<RemoteAlbumItem>>
+
+    @GET("albums/{albumId}")
+    suspend fun getAlbumById(albumId: Int): Response<RemoteAlbumItem>
 }

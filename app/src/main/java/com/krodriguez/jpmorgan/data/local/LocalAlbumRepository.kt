@@ -8,4 +8,5 @@ interface LocalAlbumRepository {
     suspend fun getAlbums(): Flow<APIState>
     suspend fun removeAllAlbums(): Flow<Boolean>
     suspend fun insertAlbum(album: RemoteAlbumItem): Flow<Boolean>
+    suspend fun getAlbumById(albumId: Int): Flow<APIState>
 }

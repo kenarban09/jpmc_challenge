@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface RemoteAlbumRepository {
     suspend fun getAlbums(): Flow<APIState>
+    suspend fun getAlbumById(albumId: Int): Flow<APIState>
 }

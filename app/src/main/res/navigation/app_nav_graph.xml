@@ -9,6 +9,20 @@
         android:id="@+id/nav_list"
         android:name="com.krodriguez.jpmorgan.ui.list.AlbumFragment"
         android:label="@string/menu_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_nav_list_to_nav_details"
+            app:destination="@id/nav_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_details"
+        android:name="com.krodriguez.jpmorgan.ui.details.AlbumDetailsFragment"
+        android:label="@string/menu_item"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="albumId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
