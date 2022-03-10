@@ -44,4 +44,10 @@ class LocalAlbumRepositoryImpl(
         applyDelay()
         emit(true)
     }
+
+    override suspend fun getAlbumById(albumId: Int): Flow<APIState> = flow {
+        val album = albumsDao.getAlbumById(albumId)
+        applyDelay()
+        emit(APIState.SuccessItem(mapper.fromCacheToUi(album)))
+    }
 }

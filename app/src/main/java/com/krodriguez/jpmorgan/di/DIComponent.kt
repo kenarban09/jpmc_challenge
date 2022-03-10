@@ -10,6 +10,7 @@ import com.krodriguez.jpmorgan.data.local.LocalAlbumRepositoryImpl
 import com.krodriguez.jpmorgan.data.local.dao.AlbumsDao
 import com.krodriguez.jpmorgan.data.remote.RemoteAlbumRepositoryImpl
 import com.krodriguez.jpmorgan.data.remote.RemoteAlbumService
+import com.krodriguez.jpmorgan.domain.GetAlbumByIdUseCase
 import com.krodriguez.jpmorgan.domain.mapper.AlbumsMapper
 import com.krodriguez.jpmorgan.domain.GetAlbumsUseCase
 import com.krodriguez.jpmorgan.presentation.AlbumViewModel
@@ -61,6 +62,13 @@ object DIComponent {
 
     private fun provideUseCase(): GetAlbumsUseCase {
         return GetAlbumsUseCase(
+            provideRemoteRepositoryImpl(),
+            provideLocalRepositoryImpl()
+        )
+    }
+
+    private fun provideUseCaseItem(): GetAlbumByIdUseCase {
+        return GetAlbumByIdUseCase(
             provideRemoteRepositoryImpl(),
             provideLocalRepositoryImpl()
         )

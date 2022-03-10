@@ -10,6 +10,9 @@ interface AlbumsDao {
     @Query("SELECT * FROM ${DBConstants.ALBUM_TABLE} ORDER BY title ASC")
     fun getAlbums(): List<AlbumEntity>
 
+    @Query("SELECT * FROM ${DBConstants.ALBUM_TABLE} WHERE id = :albumId")
+    fun getAlbumById(albumId: Int): AlbumEntity
+
     @Insert
     fun insertAlbum(album: AlbumEntity): Long
 

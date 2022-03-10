@@ -103,6 +103,7 @@ class AlbumFragment : Fragment() {
         binding.apply {
             tvError.text = error
             tvError.visibility = View.VISIBLE
+
             recyclerView.visibility = View.GONE
             pbLoading.visibility = View.GONE
             srlList.isRefreshing = false
