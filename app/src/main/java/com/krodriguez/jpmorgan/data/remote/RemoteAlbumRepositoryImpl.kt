@@ -58,7 +58,7 @@ class RemoteAlbumRepositoryImpl(
             if (albums.isSuccessful) {
                 albums.body()?.let { response ->
                     // Success
-                    emit(APIState.SuccessItem(response))
+                    emit(APIState.Success(response))
                 }
             }
         } catch (e: Exception) {

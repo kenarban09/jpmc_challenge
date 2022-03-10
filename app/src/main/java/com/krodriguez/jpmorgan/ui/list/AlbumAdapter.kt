@@ -7,7 +7,8 @@ import com.krodriguez.jpmorgan.data.remote.model.RemoteAlbumItem
 import com.krodriguez.jpmorgan.databinding.AlbumItemLayoutBinding
 
 class AlbumAdapter(
-    private var dataSet: List<RemoteAlbumItem>
+    private var dataSet: List<RemoteAlbumItem>,
+    private val openDetail: (RemoteAlbumItem) -> Unit
 ) : RecyclerView.Adapter<AlbumAdapter.AlbumsViewHolder>() {
 
     fun updateDataSet(newDataset: List<RemoteAlbumItem>) {
@@ -15,11 +16,14 @@ class AlbumAdapter(
         notifyDataSetChanged()
     }
 
-    class AlbumsViewHolder(private val binding: AlbumItemLayoutBinding) :
+    class AlbumsViewHolder(
+        private val binding: AlbumItemLayoutBinding
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(dataItem: RemoteAlbumItem) {
+        fun onBind(dataItem: RemoteAlbumItem, openDetail: (RemoteAlbumItem) -> Unit) {
             binding.tvTitle.text = dataItem.title
+            binding.root.setOnClickListener { openDetail(dataItem) }
         }
     }
 
@@ -30,7 +34,7 @@ class AlbumAdapter(
     }
 
     override fun onBindViewHolder(holder: AlbumsViewHolder, position: Int) {
-        holder.onBind(dataSet[position])
+        holder.onBind(dataSet[position], openDetail)
     }
 
     override fun getItemCount(): Int {

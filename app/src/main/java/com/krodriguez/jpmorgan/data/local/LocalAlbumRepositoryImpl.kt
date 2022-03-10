@@ -3,7 +3,6 @@ package com.krodriguez.jpmorgan.data.local
 import com.krodriguez.jpmorgan.data.local.dao.AlbumsDao
 import com.krodriguez.jpmorgan.data.remote.model.RemoteAlbumItem
 import com.krodriguez.jpmorgan.data.remote.state.APIState
-import com.krodriguez.jpmorgan.di.DIComponent
 import com.krodriguez.jpmorgan.domain.mapper.AlbumsMapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -48,6 +47,6 @@ class LocalAlbumRepositoryImpl(
     override suspend fun getAlbumById(albumId: Int): Flow<APIState> = flow {
         val album = albumsDao.getAlbumById(albumId)
         applyDelay()
-        emit(APIState.SuccessItem(mapper.fromCacheToUi(album)))
+        emit(APIState.Success(mapper.fromCacheToUi(album)))
     }
 }
